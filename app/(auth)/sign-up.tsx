@@ -1,7 +1,10 @@
 import * as React from 'react'
-import { Text, TextInput, Button, View } from 'react-native'
+import { Text, TextInput, View } from 'react-native'
 import { useSignUp } from '@clerk/clerk-expo'
-import { useRouter } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
+import { Button } from '~/components/ui/button'
+
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp()
@@ -65,36 +68,60 @@ export default function SignUpScreen() {
 
   if (pendingVerification) {
     return (
-      <>
-        <Text>Verify your email</Text>
+      <View className="flex-1 justify-end gap-2 p-2">
+        <Text className="dark:text-white text-black text-2xl font-bold mb-4">Verify your email</Text>
         <TextInput
+          className="dark:outline-white h-16 py-1 px-4 outline-black border dark:border-white border-black dark:text-white text-black rounded-md"
           value={code}
           placeholder="Enter your verification code"
+          placeholderTextColor="#888"
           onChangeText={(code) => setCode(code)}
         />
-        <Button title="Verify" onPress={onVerifyPress} />
-      </>
-    )
+        <Button
+        onPress={onVerifyPress}
+        className="bg-lime-500 my-4 p-2 flex-row justify-center items-center h-16"
+      >
+        <Text className="font-semibold text-2xl h-full">Sign Up</Text>
+        <FontAwesome name="long-arrow-right" size={24} color="black" />
+      </Button>
+      </View>
+    );
   }
 
   return (
-    <View>
-      <>
-        <Text>Sign up</Text>
-        <TextInput
-          autoCapitalize="none"
-          value={emailAddress}
-          placeholder="Enter email"
-          onChangeText={(email) => setEmailAddress(email)}
-        />
-        <TextInput
-          value={password}
-          placeholder="Enter password"
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
-        />
-        <Button title="Continue" onPress={onSignUpPress} />
-      </>
+    <View className="flex-1 justify-end gap-2 p-2">
+      <Text className="dark:text-white text-black text-2xl font-bold mb-4">Sign up for Latent</Text>
+      <TextInput
+        className="dark:outline-white h-16 py-1 px-4 outline-black border dark:border-white border-black dark:text-white text-black rounded-md"
+        autoCapitalize="none"
+        value={emailAddress}
+        placeholder="Enter email"
+        placeholderTextColor="#888"
+        onChangeText={(email) => setEmailAddress(email)}
+      />
+      <TextInput
+        className="dark:outline-white h-16 py-1 px-4 outline-black border dark:border-white border-black dark:text-white text-black rounded-md"
+        value={password}
+        placeholder="Enter password"
+        placeholderTextColor="#888"
+        secureTextEntry={true}
+        onChangeText={(password) => setPassword(password)}
+      />
+      <Button
+        onPress={onSignUpPress}
+        className="bg-lime-500 my-4 p-2 flex-row justify-center items-center h-16"
+      >
+        <Text className="font-semibold text-2xl h-full">Sign Up</Text>
+        <FontAwesome name="long-arrow-right" size={24} color="black" />
+      </Button>
+      <View className="flex-row justify-start items-center gap-4 mt-4">
+        <Text className="dark:text-white text-black">
+          Already have an account?
+        </Text>
+        <Link href="/sign-in">
+          <Text className="text-blue-500">Sign in</Text>
+        </Link>
+      </View>
     </View>
-  )
+  );
 }

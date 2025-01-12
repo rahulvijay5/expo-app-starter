@@ -24,6 +24,12 @@ export default function AuthRoutesLayout() {
             // headerStyle:{backgroundColor:"white"}
           }}
         />
+        {/* <Stack.Screen
+          name="onboarding"
+          options={{
+            headerShown: false,
+          }}
+        /> */}
       </Stack>
     </SafeAreaView>
   );

@@ -27,7 +27,7 @@ const _layout = () => {
         <Stack.Screen
           name="ApplyForIGL"
           options={{
-            headerShown: true,
+            headerShown: false,
             headerShadowVisible: false,
             headerTitleAlign: "left",
             headerTitleStyle: { fontSize: 20 },
@@ -102,6 +102,16 @@ const _layout = () => {
             headerTitleAlign: "left",
             headerTitleStyle: { fontSize: 20 },
             title: "Notifications",
+          }}
+        />
+        <Stack.Screen
+          name="Onboarding"
+          options={{
+            headerShown: false,
+            headerShadowVisible: false,
+            headerTitleAlign: "left",
+            headerTitleStyle: { fontSize: 20 },
+            title: "Onboarding",
           }}
         />
       </Stack>

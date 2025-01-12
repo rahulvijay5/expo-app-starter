@@ -47,8 +47,8 @@ export default function Page() {
     <View className="flex-1 justify-end gap-2 p-2">
       <Text className="dark:text-white text-black text-2xl font-bold mb-4">Login to Continue</Text>
       <Input
-        placeholder="Enter Email Id/Phone Number"
-        className="dark:outline-white h-16 py-1 outline-black  border dark:border-white border-black dark:text-white text-black"
+        placeholder="Enter Email Id"
+        className="h-16 py-1 dark:text-white text-black"
         value={emailAddress}
         onChangeText={(emailAddress: string) => setEmailAddress(emailAddress)}
         aria-labelledby="inputLabel"
@@ -56,14 +56,14 @@ export default function Page() {
       />
       <Input
         placeholder="Enter password"
-        className="dark:outline-white h-16 py-1 outline-black  border dark:border-white border-black dark:text-white text-black"
+        className=" h-16 py-1 dark:text-white text-black"
         value={password}
         secureTextEntry={true}
         onChangeText={(password) => setPassword(password)}
       />
       <Button
         onPress={onSignInPress}
-        className="bg-lime-500 my-4 p-2 flex-row justify-center items-center h-16"
+        className="bg-lime-500 mb-4 p-2 flex-row justify-center items-center h-20 "
       >
         <Text className="font-semibold text-2xl h-full">Sign in</Text>
         <FontAwesome name="long-arrow-right" size={24} color="black" />

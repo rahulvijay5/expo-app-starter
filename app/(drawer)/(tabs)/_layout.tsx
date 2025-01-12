@@ -5,7 +5,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
 import { Link, Redirect, Tabs } from 'expo-router';
 import {Text} from 'react-native'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSignIn } from '@clerk/clerk-expo'
@@ -16,11 +16,28 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { Button } from '@react-navigation/elements';
 import { useColorScheme } from '~/lib/useColorScheme';
+// import { useUserData } from '~/hooks/useUserData';
 
 const Drawer = createDrawerNavigator();
 
 export default function TabLayout() {
   const {isDarkColorScheme} = useColorScheme() 
+
+  // const { userData, isLoading, isAuthenticated } = useUserData();
+  // const router = useRouter();
+  // console.log("User Data", userData)
+  // console.log("Is Loading", isLoading)
+  // console.log("Is Authenticated", isAuthenticated)
+
+  // useEffect(() => {
+  //   if (!userData?.isOnboarded) {
+  //     router.push('/(auth)/onboarding');
+  //   }
+  // }, []);
+
+  // if (isLoading) {
+  //   return <Text>Loading...</Text>;
+  // }
 
   return (
     <>

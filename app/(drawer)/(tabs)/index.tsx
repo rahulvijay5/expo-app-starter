@@ -1,11 +1,14 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { View } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import BonusEpisodes from "~/components/BonusEpisodes";
 import FreeEpisodes from "~/components/FreeEpisodes";
-
+import {Button} from "~/components/ui/button";
 const Tab = createMaterialTopTabNavigator();
 import { Image } from "react-native";
-import { Link } from "expo-router";
+import { Link, Redirect, router, useRouter } from "expo-router";
+import { useEffect } from "react";
+import { useUserData } from "@/hooks/useUserData";
+import { Text } from "~/components/ui/text";
 
 function HeaderImage() {
   return (
@@ -15,16 +18,22 @@ function HeaderImage() {
         className="w-full h-44 border-white/10 border-2 mb-4"
         resizeMode="contain"
       />
-        <Link href="/(extras)/Membership" className="mb-2"> 
+      <Link href="/(extras)/Membership" className="mb-2">
         <Image
           source={require("@/assets/images/icon.png")}
           className="w-full h-32 border-white/10 border-2 rounded-2xl"
           resizeMode="contain"
         />
       </Link>
-      <Link href="/(extras)/ConnectMembership" className="mb-2"> 
-      <Image
-        source={require("@/assets/images/icon.png")}
+        {/* <Button
+          className="bg-white/10"
+          onPress={() => router.push("/(extras)/Onboarding")}
+        >
+          <Text>Onboarding</Text>
+        </Button> */}
+      <Link href="/(extras)/ConnectMembership" className="mb-2">
+        <Image
+          source={require("@/assets/images/icon.png")}
           className="w-full h-32 border-white/10 border-2 rounded-2xl mb-2"
           resizeMode="contain"
         />
@@ -34,8 +43,29 @@ function HeaderImage() {
 }
 
 export default function MyTabs() {
+  const router = useRouter();
+  const { userData, isLoading, isAuthenticated } = useUserData();
+
+  useEffect(() => {
+    const checkOnboarding = async () => {
+      if (!isLoading && isAuthenticated && !userData?.isOnboarded) {
+        router.push('/(extras)/Onboarding');
+      }
+    };
+
+    checkOnboarding();
+  }, [isLoading, isAuthenticated, userData?.isOnboarded]);
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   return (
-    <View style={{ flex: 1, padding: 6, paddingTop: 14 ,height:"100%"}}>
+    <View style={{ flex: 1, padding: 6, paddingTop: 14, height: "100%" }}>
       <HeaderImage />
       <Tab.Navigator
         style={{ flex: 1 }}

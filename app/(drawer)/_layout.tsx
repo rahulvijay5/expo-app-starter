@@ -17,12 +17,15 @@ import { ThemeToggle } from "~/components/ThemeToggle";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import { useColorScheme } from "~/lib/useColorScheme";
+import { useUserData } from "~/hooks/useUserData";
 
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const pathname = usePathname();
 
   const user = useUser();
   const { signOut } = useClerk();
+
+  const { userData } = useUserData();
 
   const handleShareApp = () => {
     Share.share({
@@ -61,10 +64,8 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
         source={require("@/assets/images/icon.png")}
         className="h-28 w-28 aspect-video"
       />
-      <Text className="dark:text-white text-black">{user.user?.fullName}</Text>
-      <Text className="dark:text-white text-black ">
-        {user.user?.emailAddresses[0]?.emailAddress}
-      </Text>
+      <Text className="dark:text-white text-black mt-2 text-lg font-bold">{userData?.fullName ? userData?.fullName : userData?.email}</Text>
+
       <Separator className="my-4 dark:bg-white bg-black w-2/3" />
       <DrawerItem
         icon={({ color, size }) => (

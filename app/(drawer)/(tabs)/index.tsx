@@ -7,8 +7,12 @@ const Tab = createMaterialTopTabNavigator();
 import { Image } from "react-native";
 import { Link, Redirect, router, useRouter } from "expo-router";
 import { useEffect } from "react";
-import { useUserData } from "@/hooks/useUserData";
+import { useUserContext } from "@/context/UserContext";
 import { Text } from "~/components/ui/text";
+
+// import { View } from "react-native";
+// import { Text } from "~/components/ui/text";
+// import { useUserContext } from "~/context/UserContext";
 
 function HeaderImage() {
   return (
@@ -44,22 +48,19 @@ function HeaderImage() {
 
 export default function MyTabs() {
   const router = useRouter();
-  const { userData, isLoading, isAuthenticated } = useUserData();
+  const { userData, isLoading, isAuthenticated } = useUserContext();
 
   useEffect(() => {
-    const checkOnboarding = async () => {
-      if (!isLoading && isAuthenticated && !userData?.isOnboarded) {
-        router.push('/(extras)/Onboarding');
-      }
-    };
-
-    checkOnboarding();
+    if (!isLoading && isAuthenticated && !userData?.isOnboarded) {
+      router.replace('/(extras)/Onboarding');
+    }
   }, [isLoading, isAuthenticated, userData?.isOnboarded]);
 
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" />
+        <Text className="mt-2">Loading...</Text>
       </View>
     );
   }
@@ -85,3 +86,17 @@ export default function MyTabs() {
     </View>
   );
 }
+
+// export default function Home() {
+//   const userData = useUserContext()
+//   return (
+//     <View>
+//       <Text>{userData?.userData?.email}</Text>
+//       <Text>{userData?.userData?.fullName}</Text>
+//       <Text>{userData?.userData?.phoneNumber}</Text>
+//       <Text>{userData?.userData?.state}</Text>
+//       <Text>{userData?.userData?.isOnboarded}</Text>
+//       <Text>{userData?.userData?.id}</Text>
+//     </View>
+//   );
+// }

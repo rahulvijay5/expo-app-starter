@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { View, ScrollView, ActivityIndicator } from 'react-native';
+import { View, ScrollView, ActivityIndicator, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
-import { useUserData } from '@/hooks/useUserData';
+import { useUserContext } from '@/context/UserContext';
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { userData, updateUserData, isLoading: userDataLoading } = useUserData();
+  const { userData, updateUserData, isLoading: userDataLoading } = useUserContext();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: userData?.fullName || '',
@@ -44,53 +44,55 @@ export default function OnboardingPage() {
   }
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View className="flex-1 p-4 justify-end items-start mb-8 w-full">
-        <View className="items-center mb-6">
-          <Text className="text-2xl font-semibold mb-2">Complete Your Profile</Text>
-          <Text className="text-sm text-gray-500">Please provide your details to continue</Text>
-        </View>
-
-        <View className="space-y-4">
-          <View>
-            <Text className="mb-2">Full Name</Text>
-            <Input
-              placeholder="John Doe"
-              value={formData.fullName}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, fullName: text }))}
-            />
-          </View>
-
-          <View>
-            <Text className="mb-2">Phone Number</Text>
-            <Input
-              placeholder="+1234567890"
-              value={formData.phoneNumber}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, phoneNumber: text }))}
-              keyboardType="phone-pad"
-            />
-          </View>
-
-          <View>
-            <Text className="mb-2">State</Text>
-            <Input
-              placeholder="Your state"
-              value={formData.state}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, state: text }))}
-            />
-          </View>
-
-          <Button
-            onPress={handleSubmit}
-            disabled={loading}
-            className="w-full dark:bg-white dark:text-black bg-black text-white"
-          >
-            <Text className="text-white">
-              {loading ? 'Updating...' : 'Complete Profile'}
-            </Text>
-          </Button>
-        </View>
+    <View className="flex-1 p-4 justify-end items-start mb-8 w-full">
+      <Image source={require("@/assets/images/icon.png")} className="w-full h-60 aspect-video" />
+      <View className="items-start mb-6">
+        <Text className="dark:text-white text-black text-3xl font-bold mb-2">Complete Your Profile</Text>
+        {/* <Text className="dark:text-gray-300 text-gray-600 text-base">Please provide your details to continue</Text> */}
       </View>
-    </ScrollView>
+
+      <View className="space-y-6 w-full">
+        <View>
+          <Text className="mb-2 dark:text-white text-black">Full Name</Text>
+          <Input
+            placeholder="John Doe"
+            value={formData.fullName}
+            onChangeText={(text) => setFormData(prev => ({ ...prev, fullName: text }))}
+            className="h-12 "
+          />
+        </View>
+
+        <View>
+          <Text className="mb-2 dark:text-white text-black">Phone Number</Text>
+          <Input
+            placeholder="+1234567890"
+            value={formData.phoneNumber}
+            onChangeText={(text) => setFormData(prev => ({ ...prev, phoneNumber: text }))}
+            keyboardType="phone-pad"
+            className="h-12 "
+          />
+        </View>
+
+        <View>
+          <Text className="mb-2 dark:text-white text-black">State</Text>
+          <Input
+            placeholder="Your state"
+            value={formData.state}
+            onChangeText={(text) => setFormData(prev => ({ ...prev, state: text }))}
+            className="h-12 "
+          />
+        </View>
+
+        <Button
+          onPress={handleSubmit}
+          disabled={loading}
+          className="w-full bg-lime-500"
+        >
+          <Text className="text-white font-semibold">
+            {loading ? 'Updating...' : 'Complete Profile'}
+          </Text>
+        </Button>
+      </View>
+    </View>
   );
 }

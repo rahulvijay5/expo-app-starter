@@ -22,6 +22,7 @@ import { PortalHost } from "@rn-primitives/portal";
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
 import { ThemeToggle } from "~/components/ThemeToggle";
 import { Button } from "~/components/ui/button";
+import { UserProvider } from "@/context/UserContext";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -69,40 +70,44 @@ export default function RootLayout() {
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
-        {/* <Slot/> */}
-        <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+        <UserProvider>
+          {/* <Slot/> */}
+          <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+            <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+            <Stack>
+              <Stack.Screen
+                name="(drawer)"
+                options={{
+                  // headerShown: true,
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="(extras)"
+                options={{
+                  headerShown: true,
+                  headerBackButtonDisplayMode: "minimal",
+                  headerStyle: {
+                    backgroundColor: isDarkColorScheme ? "black" : "white",
+                  },
+                  headerTitle(props) {
+                    return (
+                      <Image
+                        source={require("@/assets/images/icon.png")}
+                        className="h-24 w-24 aspect-video"
+                      />
+                    );
+                  },
+                  headerTitleStyle: { color: "#A9A9A9" },
+                  headerShadowVisible: false,
+                }}
+              />
+              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            </Stack>
+            <PortalHost />
+          </ThemeProvider>
           <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-          <Stack>
-            <Stack.Screen
-              name="(drawer)"
-              options={{
-                // headerShown: true,
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="(extras)"
-              options={{
-                headerShown: true,
-                headerBackButtonDisplayMode: "minimal",
-                headerStyle: { backgroundColor: isDarkColorScheme ? "black" : "white" },
-                headerTitle(props) {
-                  return (
-                    <Image
-                      source={require("@/assets/images/icon.png")}
-                      className="h-24 w-24 aspect-video"
-                    />
-                  );
-                },
-                headerTitleStyle: { color: "#A9A9A9" },
-                headerShadowVisible: false,
-              }}
-            />
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          </Stack>
-          <PortalHost />
-        </ThemeProvider>
-        <StatusBar style={ isDarkColorScheme ? "light" : "dark" } />
+        </UserProvider>
       </ClerkLoaded>
     </ClerkProvider>
   );

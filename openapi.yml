@@ -1,0 +1,421 @@
+openapi: 3.0.0
+info:
+  title: Latent Backend API
+  version: 1.0.0
+  description: API documentation for Latent Backend
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        clerkId:
+          type: string
+        fullName:
+          type: string
+        phoneNumber:
+          type: string
+        state:
+          type: string
+        isOnboarded:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    MembershipProgram:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    BonusEpisode:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        videoUrl:
+          type: string
+        programId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    FreeEpisode:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        videoUrl:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        userId:
+          type: string
+        likes:
+          type: boolean
+        readAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+
+    StarsOfLatent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        imageUrl:
+          type: string
+        profileUrl:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    SupportChat:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        createdAt:
+          type: string
+          format: date-time
+
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        message:
+          type: string
+        imageUrl:
+          type: string
+        chatId:
+          type: string
+        readAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+
+    ApplyForIGL:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        link:
+          type: string
+        description:
+          type: string
+        title:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+paths:
+  /users:
+    post:
+      summary: Create user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    
+
+  /users/{id}:
+    get:
+      summary: Get user profile
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      summary: Update user profile
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /memberships:
+    get:
+      summary: Get all membership programs
+      responses:
+        '200':
+          description: List of membership programs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MembershipProgram'
+
+  /memberships/user-membership:
+    post:
+      summary: Add membership program to user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                membershipId:
+                  type: string
+      responses:
+        '200':
+          description: User membership created successfully
+
+  /episodes/bonus:
+    get:
+      summary: Get all bonus episodes
+      responses:
+        '200':
+          description: List of bonus episodes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BonusEpisode'
+
+  /episodes/free:
+    get:
+      summary: Get all free episodes
+      responses:
+        '200':
+          description: List of free episodes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FreeEpisode'
+
+
+  /notifications/user/{userId}:
+    get:
+      summary: Get all notifications for a user
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+
+  /notifications/{id}/like:
+    post:
+      summary: Like a notification
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Notification liked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+
+  /notifications/{id}/read:
+    post:
+      summary: Mark notification as read
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Notification marked as read successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+
+  /stars:
+    get:
+      summary: Get all stars of latent
+      responses:
+        '200':
+          description: List of stars
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StarsOfLatent'
+
+  /support:
+    post:
+      summary: Create support chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                message:
+                  type: string
+                imageUrl:
+                  type: string
+      responses:
+        '200':
+          description: Support chat created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportChat'
+
+  /support/user/{userId}:
+    get:
+      summary: Get all support chats for a user
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of support chats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportChat'
+
+  /igl:
+    post:
+      summary: Create IGL application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplyForIGL'
+      responses:
+        '200':
+          description: IGL application created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplyForIGL'

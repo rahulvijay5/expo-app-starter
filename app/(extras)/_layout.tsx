@@ -114,56 +114,17 @@ const _layout = () => {
             title: "Onboarding",
           }}
         />
-      </Stack>
-      {/* <Drawer
-        screenOptions={{
-          headerRight: () => (
-            <Pressable 
-              onPress={() => router.push('/(extras)/Notifications')}
-              className="mr-4 relative"
-            >
-              <MaterialCommunityIcons 
-                name="bell-outline" 
-                size={24} 
-                color="#84cc16" 
-              />
-              {hasNewNotifications && (
-                <View className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#84cc16]" />
-              )}
-            </Pressable>
-          ),
-        }}
-      >
-        <Drawer.Screen
-          name="index"
-          options={{
-            drawerLabel: 'Home',
-            title: 'Home',
-          }}
-        />
-        <Drawer.Screen
-          name="Notifications"
-          options={{
-            drawerLabel: 'Notifications',
-            title: 'Notifications',
-          }}
-        />
-        <Drawer.Screen
-          name="Settings"
-          options={{
-            drawerLabel: 'Settings',
-            title: 'Settings',
-          }}
-        />
-        <Drawer.Screen
+        <Stack.Screen
           name="UpdateProfile"
           options={{
-            drawerLabel: 'Update Profile',
-            title: 'Update Profile',
-            drawerItemStyle: { display: 'none' }
+            headerShown: false,
+            headerShadowVisible: false,
+            headerTitleAlign: "left",
+            headerTitleStyle: { fontSize: 20 },
+            title: "Update Profile",
           }}
         />
-      </Drawer> */}
+      </Stack>
     </SignedIn>
   );
 };
